@@ -18,11 +18,13 @@ export default function SelectCharacterPage() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { window.location.href = '/'; return }
 
-      await supabase.from('users').upsert({
+      const { error: upsertError } = await supabase.from('users').upsert({
         id: user.id,
         character_id: id,
         started_at: new Date().toISOString().split('T')[0],
       }, { onConflict: 'id' })
+
+      if (upsertError) { setError(upsertError.message); setLoading(false); return }
 
       await supabase.from('streaks').upsert({ user_id: user.id }, { onConflict: 'user_id' })
       await supabase.from('character_evolution').upsert({ user_id: user.id }, { onConflict: 'user_id' })
