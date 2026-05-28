@@ -1,17 +1,22 @@
 'use client'
 
 import { useState } from 'react'
-import { signInAnonymously } from './auth/actions'
+import { useRouter } from 'next/navigation'
+import { createClient } from '@/lib/supabase/client'
 
 export default function SplashPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const router = useRouter()
 
   const handleStart = async () => {
     setLoading(true)
     setError('')
     try {
-      await signInAnonymously()
+      const supabase = createClient()
+      const { error } = await supabase.auth.signInAnonymously()
+      if (error) throw error
+      router.push('/select-character')
     } catch {
       setError('しばらく待ってからもう一度試してね。')
       setLoading(false)
