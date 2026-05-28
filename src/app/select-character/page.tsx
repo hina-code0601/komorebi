@@ -17,7 +17,7 @@ export default function SelectCharacterPage() {
     try {
       const supabase = createClient()
       const { data: { user } } = await supabase.auth.getUser()
-      if (!user) { router.push('/'); return }
+      if (!user) { window.location.href = '/'; return }
 
       await supabase.from('users').upsert({
         id: user.id,
@@ -28,7 +28,7 @@ export default function SelectCharacterPage() {
       await supabase.from('streaks').upsert({ user_id: user.id }, { onConflict: 'user_id' })
       await supabase.from('character_evolution').upsert({ user_id: user.id }, { onConflict: 'user_id' })
 
-      router.push('/home')
+      window.location.href = '/home'
     } catch {
       setLoading(false)
     }
