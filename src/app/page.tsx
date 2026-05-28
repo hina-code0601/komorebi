@@ -17,8 +17,9 @@ export default function SplashPage() {
       const { error } = await supabase.auth.signInAnonymously()
       if (error) throw error
       router.push('/select-character')
-    } catch {
-      setError('しばらく待ってからもう一度試してね。')
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : String(e)
+      setError(msg)
       setLoading(false)
     }
   }
