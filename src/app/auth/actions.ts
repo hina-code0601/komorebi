@@ -3,6 +3,13 @@
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 
+export async function signInAnonymously() {
+  const supabase = await createClient()
+  const { error } = await supabase.auth.signInAnonymously()
+  if (error) throw new Error(error.message)
+  redirect('/select-character')
+}
+
 export async function signInWithEmail(email: string) {
   const supabase = await createClient()
   const { error } = await supabase.auth.signInWithOtp({

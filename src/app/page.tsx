@@ -1,25 +1,19 @@
 'use client'
 
 import { useState } from 'react'
-import { signInWithEmail } from './auth/actions'
+import { signInAnonymously } from './auth/actions'
 
 export default function SplashPage() {
-  const [email, setEmail] = useState('')
-  const [sent, setSent] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!email) return
+  const handleStart = async () => {
     setLoading(true)
     setError('')
     try {
-      await signInWithEmail(email)
-      setSent(true)
-    } catch (err) {
-      setError('送信に失敗しました。もう一度お試しください。')
-    } finally {
+      await signInAnonymously()
+    } catch {
+      setError('しばらく待ってからもう一度試してね。')
       setLoading(false)
     }
   }
@@ -29,9 +23,8 @@ export default function SplashPage() {
       className="min-h-screen flex flex-col items-center justify-center px-6"
       style={{ backgroundColor: 'var(--color-background)' }}
     >
-      <div className="w-full max-w-sm animate-fade-in">
-        {/* ロゴ */}
-        <div className="text-center mb-12">
+      <div className="w-full max-w-sm animate-fade-in flex flex-col items-center gap-12">
+        <div className="text-center">
           <h1
             className="text-4xl mb-3"
             style={{ color: 'var(--color-accent)', fontFamily: 'Klee One, cursive' }}
@@ -43,61 +36,25 @@ export default function SplashPage() {
           </p>
         </div>
 
-        {sent ? (
-          <div className="text-center animate-fade-in">
-            <div className="text-5xl mb-6">✉️</div>
-            <p style={{ color: 'var(--color-text)' }} className="text-base leading-relaxed">
-              メールを送りました。
-              <br />
-              リンクをタップしてログインしてください。
-            </p>
-          </div>
-        ) : (
-          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div>
-              <input
-                type="email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="メールアドレス"
-                required
-                className="w-full px-4 py-3 rounded-2xl text-base outline-none transition"
-                style={{
-                  backgroundColor: 'var(--color-secondary)',
-                  color: 'var(--color-text)',
-                  border: '1.5px solid transparent',
-                  fontFamily: 'Noto Sans JP, sans-serif',
-                }}
-                onFocus={e => (e.target.style.borderColor = 'var(--color-primary)')}
-                onBlur={e => (e.target.style.borderColor = 'transparent')}
-              />
-            </div>
-
-            {error && (
-              <p className="text-sm text-center" style={{ color: 'var(--color-accent)' }}>
-                {error}
-              </p>
-            )}
-
-            <button
-              type="submit"
-              disabled={loading || !email}
-              className="w-full py-3 rounded-2xl text-base font-medium transition-opacity"
-              style={{
-                backgroundColor: 'var(--color-primary)',
-                color: '#fff',
-                opacity: loading || !email ? 0.6 : 1,
-                fontFamily: 'Noto Sans JP, sans-serif',
-              }}
-            >
-              {loading ? '送信中...' : 'はじめる'}
-            </button>
-          </form>
+        {error && (
+          <p className="text-sm text-center" style={{ color: 'var(--color-accent)' }}>
+            {error}
+          </p>
         )}
 
-        <p className="text-center text-xs mt-8" style={{ color: 'var(--color-text-light)' }}>
-          メールアドレスのみで利用できます
-        </p>
+        <button
+          onClick={handleStart}
+          disabled={loading}
+          className="w-full py-4 rounded-2xl text-base font-medium transition-opacity"
+          style={{
+            backgroundColor: 'var(--color-primary)',
+            color: '#fff',
+            opacity: loading ? 0.6 : 1,
+            fontFamily: 'Noto Sans JP, sans-serif',
+          }}
+        >
+          {loading ? 'はじめています...' : 'はじめる'}
+        </button>
       </div>
     </div>
   )
