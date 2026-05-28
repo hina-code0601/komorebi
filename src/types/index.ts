@@ -13,14 +13,14 @@ export const characters: Record<CharacterId, Character> = {
     id: 'shizuku',
     name: 'しずく',
     color: '#89CFF0',
-    catchphrase: 'うん、聞いてるよ',
+    catchphrase: 'お話聞かせて',
     image: '/characters/shizuku.png',
   },
   pomu: {
     id: 'pomu',
     name: 'ぽむ',
     color: '#C9B1D9',
-    catchphrase: 'いっしょにがんばろ！',
+    catchphrase: 'いっしょにね！',
     image: '/characters/pomu.png',
   },
   kokeshi: {

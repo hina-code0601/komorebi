@@ -19,10 +19,11 @@ export default function SelectCharacterPage() {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) { router.push('/'); return }
 
-      await supabase
-        .from('users')
-        .update({ character_id: id })
-        .eq('id', user.id)
+      await supabase.from('users').upsert({
+        id: user.id,
+        character_id: id,
+        started_at: new Date().toISOString().split('T')[0],
+      }, { onConflict: 'id' })
 
       await supabase.from('streaks').upsert({ user_id: user.id }, { onConflict: 'user_id' })
       await supabase.from('character_evolution').upsert({ user_id: user.id }, { onConflict: 'user_id' })
@@ -44,7 +45,7 @@ export default function SelectCharacterPage() {
             className="text-2xl mb-2"
             style={{ color: 'var(--color-accent)', fontFamily: 'Klee One, cursive' }}
           >
-            いっしょにいてくれる子を選んで
+            パートナーを決めてね
           </h1>
           <p className="text-sm" style={{ color: 'var(--color-text-light)' }}>
             あとで変えることもできます
