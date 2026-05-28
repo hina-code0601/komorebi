@@ -4,7 +4,7 @@ export type Database = {
       users: {
         Row: {
           id: string
-          email: string
+          email: string | null
           character_id: string
           started_at: string
           last_visited_at: string | null
@@ -13,7 +13,7 @@ export type Database = {
         }
         Insert: {
           id?: string
-          email: string
+          email?: string | null
           character_id?: string
           started_at?: string
           last_visited_at?: string | null

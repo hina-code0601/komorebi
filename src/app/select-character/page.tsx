@@ -1,13 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import { characters, CharacterId } from '@/types'
 import { createClient } from '@/lib/supabase/client'
 import CharacterAvatar from '@/components/CharacterAvatar'
 
 export default function SelectCharacterPage() {
-  const router = useRouter()
   const [selected, setSelected] = useState<CharacterId | null>(null)
   const [loading, setLoading] = useState(false)
 
