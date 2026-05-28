@@ -8,6 +8,7 @@ import CharacterAvatar from '@/components/CharacterAvatar'
 export default function SelectCharacterPage() {
   const [selected, setSelected] = useState<CharacterId | null>(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleSelect = async (id: CharacterId) => {
     setSelected(id)
@@ -27,7 +28,8 @@ export default function SelectCharacterPage() {
       await supabase.from('character_evolution').upsert({ user_id: user.id }, { onConflict: 'user_id' })
 
       window.location.href = '/home'
-    } catch {
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : String(e))
       setLoading(false)
     }
   }
@@ -83,6 +85,9 @@ export default function SelectCharacterPage() {
           ))}
         </div>
 
+        {error && (
+          <p className="text-center text-sm mt-4" style={{ color: 'red' }}>{error}</p>
+        )}
         {loading && (
           <p
             className="text-center text-sm mt-8 animate-fade-in"
