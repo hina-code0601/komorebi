@@ -75,6 +75,6 @@ export const getGreeting = (
   if (dayCount === 60) return `2ヶ月だよ。本当にありがとう`
   if (dayCount === 100) return `100日。すごいよ、本当に`
   if (dayCount === 365) return `1年。ずっといっしょだったね`
-  if (hasWrittenToday) return `今日もよく書いてくれた`
+  if (hasWrittenToday) return `今日も書いてくれてありがとう`
   return `${dayCount}日目だよ。今日も書こっか`
 }
